@@ -1,4 +1,6 @@
-[<a href="/README.md">English</a>] | [<a href="/docs/README.zh-Hans.md">中文(简体)</a>]
+<p align="center">
+  <a href="README.md">English</a> | <a href="docs/README.zh-Hans.md">中文(简体)</a>
+</p>
 
 # 1Panel MCP Server (Extended)
 

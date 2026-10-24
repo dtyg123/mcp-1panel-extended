@@ -1,3 +1,7 @@
+<p align="center">
+  <a href="../README.md">English</a> | <a href="README.zh-Hans.md">中文(简体)</a>
+</p>
+
 # 1Panel MCP Server（扩展版 Fork）
 
 > 🍴 本仓库是 [1Panel-dev/mcp-1panel](https://github.com/1Panel-dev/mcp-1panel) 的扩展 fork——新增 4 个工具，并修复了适配 1Panel v2 的 API 基础路径。采用与上游相同的 [GPL-3.0](LICENSE) 许可证。
@@ -59,6 +63,10 @@ make build
 ```bash
 go install github.com/dtyg123/mcp-1panel-extended@latest
 ```
+
+### 🐳 方式四：通过 Docker 安装（仅上游工具）
+
+确保本地已正确安装并配置 Docker。官方镜像 `1panel/1panel-mcp-server` 支持 `amd64`、`arm64`、`arm/v7`、`s390x`、`ppc64le` 五种架构，但**只包含上游工具**；需要扩展工具请使用方式一或方式二。
 
 ---
 
