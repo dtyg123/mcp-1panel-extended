@@ -14,15 +14,26 @@
 | 🌐 覆盖全部 API | `call_panel_api` 可直接调用**任意** 1Panel API 端点（GET/POST/PUT/DELETE），凡是没有专属工具的面板功能都能通过它访问 |
 | 🔧 API 基址修复 | 上游 `main` 分支的 `ApiBase = "/api/v1"`，而 1Panel v2.x 只提供 `/api/v2`（其余路径全部 404）。本 fork 已改为 `/api/v2` |
 
-> ⚠️ 本 fork 不发布 Release 二进制和容器镜像——请通过源码构建（方式二）安装。官方 `1panel/1panel-mcp-server` 镜像只包含上游的工具。
+> 本 fork 的 Linux 二进制发布在本仓库 [Releases 页面](https://github.com/dtyg123/mcp-1panel-extended/releases)（amd64 / arm64 / armv7 / s390x / ppc64le）。官方 `1panel/1panel-mcp-server` Docker 镜像只包含上游的工具。
 
 ---
 
 ## 安装方式
 
-> 注意：方式一（Release 页面）与方式四（Docker 镜像）安装的是**上游**构建，不含扩展工具。要使用本 fork 的工具集，请通过方式二源码构建。
+> 注意：方式四（Docker 镜像）安装的是**上游**官方镜像，不含扩展工具。方式一（Release 下载）与方式二（源码构建）均包含扩展工具。
 
-### 🛠️ 方式二：通过源码构建（推荐）
+### ✅ 方式一：从 Release 页面下载（推荐）
+
+1. 访问本仓库 [Releases 页面](https://github.com/dtyg123/mcp-1panel-extended/releases)，下载对应系统的可执行文件。
+
+2. 安装示例（以 `amd64` 为例）：
+
+```bash
+chmod +x mcp-1panel-linux-amd64
+mv mcp-1panel-linux-amd64 /usr/local/bin/mcp-1panel
+```
+
+### 🛠️ 方式二：通过源码构建
 
 确保本地已安装 Go 1.23 或更高版本，执行以下命令：
 

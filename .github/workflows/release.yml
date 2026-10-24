@@ -1,0 +1,94 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g. v0.0.1-ext1)'
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - goos: linux
+            goarch: amd64
+          - goos: linux
+            goarch: arm64
+          - goos: linux
+            goarch: arm
+            goarm: 7
+          - goos: linux
+            goarch: s390x
+          - goos: linux
+            goarch: ppc64le
+
+    name: Build for ${{ matrix.goos }}-${{ matrix.goarch }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+
+      - name: Build Binary
+        run: |
+          mkdir -p build
+          FILE_NAME=mcp-1panel-${{ matrix.goos }}-${{ matrix.goarch }}
+          if [ "${{ matrix.goarch }}" = "arm" ]; then
+            FILE_NAME="${FILE_NAME}v${{ matrix.goarm }}"
+          fi
+          CGO_ENABLED=0 GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} GOARM=${{ matrix.goarm || '' }} \
+          go build -trimpath -ldflags '-s -w' -o build/${FILE_NAME} ./main.go
+          chmod +x build/${FILE_NAME}
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.goos }}-${{ matrix.goarch }}-${{ matrix.goarm || 'default' }}
+          path: build/*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    name: Create GitHub Release
+    steps:
+      - name: Download all binary artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./release-assets
+
+      - name: Move all binaries to one folder
+        run: |
+          mkdir -p final-release
+          find ./release-assets -type f -exec mv {} final-release/ \;
+          ls -lh final-release
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          name: ${{ github.event.inputs.version }}
+          draft: false
+          files: final-release/*
+          body: |
+            Extended build of [1Panel-dev/mcp-1panel](https://github.com/1Panel-dev/mcp-1panel) — 15 tools (upstream 11 + 4 extended) and the `/api/v2` API base fix for 1Panel v2.x.
+
+            **Extended tools:** `list_runtimes`, `list_containers`, `get_container_logs`, `call_panel_api`
+
+            | Asset | Platform |
+            |---|---|
+            | `mcp-1panel-linux-amd64` | Linux x86_64 |
+            | `mcp-1panel-linux-arm64` | Linux ARM64 |
+            | `mcp-1panel-linux-armv7` | Linux ARMv7 32-bit |
+            | `mcp-1panel-linux-s390x` | Linux IBM z |
+            | `mcp-1panel-linux-ppc64le` | Linux POWER |
+
+            Usage: rename the binary into your PATH, then configure `PANEL_HOST` and `PANEL_ACCESS_TOKEN` (see README).

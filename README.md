@@ -14,15 +14,15 @@
 | Full API access | `call_panel_api` invokes **any** 1Panel API endpoint (GET/POST/PUT/DELETE), covering every panel feature that has no dedicated tool |
 | API base fix | upstream `main` sets `ApiBase = "/api/v1"`, but 1Panel v2.x serves only `/api/v2` — everything else returns 404. This fork uses `/api/v2` |
 
-> This fork publishes no release binaries or container images — build from source (Method 2 below). The official `1panel/1panel-mcp-server` image contains only the upstream tools.
+> Pre-built Linux binaries for this fork are published on the [Releases page](https://github.com/dtyg123/mcp-1panel-extended/releases) (amd64 / arm64 / armv7 / s390x / ppc64le). The official `1panel/1panel-mcp-server` Docker image contains only the upstream tools.
 
 ## Installation Methods
 
-> Note: Method 1 (release page) and Method 4 (Docker image) install **upstream** builds without the extended tools. To use this fork's toolset, build from source (Method 2).
+> Note: Method 4 (Docker image) installs the official **upstream** image without the extended tools. Use Method 1 (Release) or Method 2 (source) for this fork's toolset.
 
-### Method 1: Download from Release Page (Recommended for upstream)
+### Method 1: Download from Release Page (Recommended)
 
-1. Visit the [Releases Page](https://github.com/1Panel-dev/mcp-1panel/releases) and download the executable file corresponding to your system.
+1. Visit this fork's [Releases Page](https://github.com/dtyg123/mcp-1panel-extended/releases) and download the executable file corresponding to your system.
 
 2. Example installation (for amd64):
 
